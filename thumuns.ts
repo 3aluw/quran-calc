@@ -1,4 +1,4 @@
-[
+export const thumunObjects = [
   { "id": 1,  "verseNumber": 1,  "surah": "الفاتحة", "surahNumber": "1" },
   { "id": 2,  "verseNumber": 14,  "surah": "البقرة", "surahNumber": "2" },
   { "id": 3,  "verseNumber": 26,  "surah": "البقرة", "surahNumber": "2" },
@@ -539,7 +539,8 @@
   { "id": 479, "verseNumber": 9, "surah": "العاديات", "surahNumber": "100" },
   { "id": 480, "verseNumber": 1, "surah": "الفيل", "surahNumber": "105" }
 ]
-[
+
+export const versIds = [
     1,
     21,
     33,
@@ -1022,7 +1023,7 @@
 ]
 
 
-const textArray = [
+export const textArray = [
   "الحمد لله رب العالمين",
   "وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلوا إلى",
   "إن الله لا يستحيي أن يضرب مثلا ما بعوضة",

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "quran-meta": "^5.0.3"
+    "quran-meta": "^5.0.3",
+    "typescript": "^5.8.3"
   }
 }
