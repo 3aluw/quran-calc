@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.textArray = exports.versIds = exports.thumunObjects = void 0;
+exports.textArray = exports.verseIds = exports.thumunObjects = void 0;
 exports.thumunObjects = [
     { "id": 1, "verseNumber": 1, "surah": "الفاتحة", "surahNumber": "1" },
     { "id": 2, "verseNumber": 14, "surah": "البقرة", "surahNumber": "2" },
@@ -10,7 +10,7 @@ exports.thumunObjects = [
     { "id": 6, "verseNumber": 54, "surah": "البقرة", "surahNumber": "2" },
     { "id": 7, "verseNumber": 60, "surah": "البقرة", "surahNumber": "2" },
     { "id": 8, "verseNumber": 67, "surah": "البقرة", "surahNumber": "2" },
-    { "id": 9, "verseNumber": 14, "surah": "البقرة", "surahNumber": "2" },
+    { "id": 9, "verseNumber": 85, "surah": "البقرة", "surahNumber": "2" },
     { "id": 10, "verseNumber": 71, "surah": "البقرة", "surahNumber": "2" },
     { "id": 11, "verseNumber": 92, "surah": "البقرة", "surahNumber": "2" },
     { "id": 12, "verseNumber": 102, "surah": "البقرة", "surahNumber": "2" },
@@ -483,7 +483,7 @@ exports.thumunObjects = [
     { "id": 479, "verseNumber": 9, "surah": "العاديات", "surahNumber": "100" },
     { "id": 480, "verseNumber": 1, "surah": "الفيل", "surahNumber": "105" }
 ];
-exports.versIds = [
+exports.verseIds = [
     1,
     21,
     33,
@@ -493,7 +493,7 @@ exports.versIds = [
     67,
     74,
     21,
-    78,
+    92,
     99,
     109,
     113,
@@ -965,7 +965,7 @@ exports.versIds = [
     6189
 ];
 exports.textArray = [
-    "الحمد لله رب العالمين",
+    "بسم الله الرحمن الرحيم",
     "وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلوا إلى",
     "إن الله لا يستحيي أن يضرب مثلا ما بعوضة",
     "وإذ قلنا للملائكة اسجدوا لآدم فسجدوا",
@@ -974,7 +974,7 @@ exports.textArray = [
     "وإذ استسقى موسى لقومه فقلنا اضرب",
     "وإذ قال موسى لقومه إن الله يأمركم أن تذبحوا",
     "وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم",
-    "وإن يأتوكم أسارى تفادوهم",
+    "ثم أنتم هؤلاء",
     "ولقد جاءكم موسى بالبينات ثم اتخذتم العجل",
     "واتبعوا ما تتلوا الشياطين على ملك سليمان",
     "ما ننسخ من آية أو ننسها",
