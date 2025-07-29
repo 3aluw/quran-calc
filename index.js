@@ -6,6 +6,9 @@ function normalizeArabic(text) {
     return text
         // Replace special letters (ٱ → ا)
         .replace(/\u0671/g, 'ا')
+        .replace(/\u0670/g, 'ا')
+        .replace(/[إأآءؤئٶٷٸ]/g, 'أ') // all visible Hamzas → أ
+        .replace(/[\u0654\u0655]/g, 'أ') // combining Hamza above (ٔ) → أ
         // Remove tashkeel
         .replace(/[\u0610-\u061A\u064B-\u065F\u06D6-\u06ED\u0670]/g, '')
         .replace(/\u06CC/g, 'ي') // Persian ی → Arabic ي (optional)    
@@ -26,8 +29,34 @@ var isAyahTextRight = function (text, ayahId) {
         index === 0 ? acc.surahNo = cur : acc.ayahNo = cur;
         return acc;
     }, { surahNo: 0, ayahNo: 0 });
-    console.log(ayahLocation);
-    var ayahText = quran_1.quranJson[ayahLocation.surahNo - 1].verses[ayahLocation.ayahNo - 1].text;
-    console.log(ayahText);
+    var foundAyahText = quran_1.quranJson[ayahLocation.surahNo - 1].verses[ayahLocation.ayahNo - 1].text;
+    return compareFirstLetters(text, foundAyahText);
 };
-isAyahTextRight('بسم', 1);
+var checkSurroundingAyahs = function (text, ayahId) {
+    console.log("ayahId", ayahId);
+    var searchAyahId = ayahId - 30;
+    var endAyahId = ayahId + 30;
+    console.log('searchAyahId', searchAyahId);
+    //make sure that ayahId is valid 1=< ayaId <= 6236
+    searchAyahId = searchAyahId >= 1 ? searchAyahId : 1;
+    endAyahId = endAyahId <= 6236 ? endAyahId : 6236;
+    console.log('searchAyahId', searchAyahId);
+    while (searchAyahId <= endAyahId) {
+        if (isAyahTextRight(text, searchAyahId))
+            return searchAyahId;
+        searchAyahId++;
+    }
+    return undefined;
+};
+/*
+const unfoundAyahs: [number, string][] = []
+const newAyahIds = verseIds.map((verseId, index) => {
+  const comparisonText = textArray[index]
+  const result = isAyahTextRight(comparisonText, verseId) ? verseId : checkSurroundingAyahs(comparisonText, verseId)
+  if (!result) unfoundAyahs.push([verseId, comparisonText])
+  return result
+})
+ */
+/* console.dir(newAyahIds, { depth: null, maxArrayLength: null });
+console.log(unfoundAyahs, { depth: null, maxArrayLength: null }); */
+checkSurroundingAyahs("قال فما خطبك يا سامري", 2399);

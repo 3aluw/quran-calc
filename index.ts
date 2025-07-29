@@ -3,12 +3,15 @@ import { meta, findPage, getSurahMeta, findSurahAyahByAyahId, checkValidSurahAya
 import type { Surah, Page, AyahId, Juz, AyahNo, SurahMeta } from 'quran-meta'
 
 import { quranJson } from './quran'
-import { thumunObjects, versIds, textArray } from './thumuns'
+import { thumunObjects, verseIds, textArray } from './thumuns'
 
 function normalizeArabic(text: string) {
   return text
     // Replace special letters (ٱ → ا)
     .replace(/\u0671/g, 'ا')
+    .replace(/\u0670/g, 'ا')
+    .replace(/[إأآءؤئٶٷٸ]/g, 'أ') // all visible Hamzas → أ
+    .replace(/[\u0654\u0655]/g, 'أ')      // combining Hamza above (ٔ) → أ
     // Remove tashkeel
     .replace(/[\u0610-\u061A\u064B-\u065F\u06D6-\u06ED\u0670]/g, '')
     .replace(/\u06CC/g, 'ي') // Persian ی → Arabic ي (optional)    
@@ -22,19 +25,39 @@ function getFirstLetters(text: string, count = 5) {
   return lettersOnly.slice(0, count).join('');
 }
 
-function compareFirstLetters(text1, text2) {
+function compareFirstLetters(text1: string, text2: string) {
   return getFirstLetters(text1) === getFirstLetters(text2);
 }
 
-const isAyahTextRight = (text: string, ayahId:AyahId) => {
+const isAyahTextRight = (text: string, ayahId: AyahId) => {
 
-const ayahLocation = findSurahAyahByAyahId(ayahId).reduce((acc, cur,index) => {
-  index === 0 ? acc.surahNo = cur : acc.ayahNo = cur;
-  return acc;
-},{surahNo: 0, ayahNo: 0});
-console.log(ayahLocation);
-const ayahText = quranJson[ayahLocation.surahNo-1].verses[ayahLocation.ayahNo-1].text;
+  const ayahLocation = findSurahAyahByAyahId(ayahId).reduce((acc, cur, index) => {
+    index === 0 ? acc.surahNo = cur : acc.ayahNo = cur;
+    return acc;
+  }, { surahNo: 0, ayahNo: 0 });
 
+  const foundAyahText = quranJson[ayahLocation.surahNo - 1].verses[ayahLocation.ayahNo - 1].text;
+  return compareFirstLetters(text, foundAyahText)
 }
 
-isAyahTextRight('بسم', 1)
+const checkSurroundingAyahs = (text: string, ayahId: AyahId) => {
+  let searchAyahId = ayahId - 10
+  let endAyahId = ayahId + 10
+  //make sure that ayahId is valid 1=< ayaId <= 6236
+  searchAyahId = searchAyahId >= 1 ? searchAyahId : 1
+  endAyahId = endAyahId <= 6236 ? endAyahId : 6236
+  while (searchAyahId <= endAyahId) {
+    if (isAyahTextRight(text, searchAyahId)) return searchAyahId
+    searchAyahId++
+  }
+  return undefined
+}
+
+const unfoundAyahs: [number, string][] = []
+const newAyahIds = verseIds.map((verseId, index) => {
+  const comparisonText = textArray[index]
+  const result = isAyahTextRight(comparisonText, verseId) ? verseId : checkSurroundingAyahs(comparisonText, verseId)
+  if (!result) unfoundAyahs.push([verseId, comparisonText])
+  return result
+})
+
