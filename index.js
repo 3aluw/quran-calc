@@ -85,12 +85,14 @@ function normalizeArabic(text) {
         .replace(/\u06CC/g, 'ي') // Persian ی → Arabic ي (optional)    
         .replace(/\s+/g, ''); // Remove all whitespace
 }
+//returns the index of the thumun (the index of start thumun: if 1 < ayahId < 21; it returns the index of 1 )
 var locateAyahInHizbEighthList = function (ayahId) {
     var foundIndex = HizbEighthList.findIndex(function (HizbEighthaAyahId, index, array) {
         return ayahId >= HizbEighthaAyahId && ayahId < array[index + 1];
     });
     return foundIndex;
 };
+//returns ayahId start and end for a thumun
 var getThumunBoundaries = function (ayahId) {
     var foundIndex = HizbEighthList.findIndex(function (HizbEighthaAyahId, index, array) {
         return ayahId >= HizbEighthaAyahId && ayahId < array[index + 1];
@@ -99,6 +101,7 @@ var getThumunBoundaries = function (ayahId) {
 };
 var calculateThumuns = function (start, end) {
 };
+//used in going down
 var calculateContinuous = function (start, end) {
     var startChunk = 0;
     var endChunk = 0;
@@ -106,17 +109,36 @@ var calculateContinuous = function (start, end) {
     var thumunEndBoundaries = getThumunBoundaries(end);
     var startFullThumunIndex = locateAyahInHizbEighthList(start);
     var endFullThumunIndex = locateAyahInHizbEighthList(end);
+    console.log(thumunStartBoundaries, thumunEndBoundaries);
+    var isTheSameThumun = startFullThumunIndex === endFullThumunIndex;
     if (!HizbEighthList.includes(start)) {
         startChunk = ThumunPortionCalculator(start, thumunStartBoundaries.end);
         startFullThumunIndex++;
     }
-    if (!HizbEighthList.includes(end)) {
+    //if it is the same thumun: don't calculate again
+    if (!HizbEighthList.includes(end) && !isTheSameThumun) {
         endChunk = ThumunPortionCalculator(thumunEndBoundaries.start, end);
     }
     var targetedFullThumunsArray = HizbEighthList.slice(startFullThumunIndex, endFullThumunIndex);
     var fullThumuns = targetedFullThumunsArray.length;
     return fullThumuns + startChunk + endChunk;
 };
+var getSurahBoundaries = function (ayahId) {
+    var _a = (0, quran_meta_1.getSurahMeta)((0, quran_meta_1.findSurahByAyahId)(ayahId)), firstAyahId = _a.firstAyahId, lastAyahId = _a.lastAyahId;
+    return { firstAyahId: firstAyahId, lastAyahId: lastAyahId };
+};
+//used when going up in the quran
+var calculateUnContinuous = function (start, end) {
+    var startSurahBoundaries = getSurahBoundaries(start);
+    var endSurahBoundaries = getSurahBoundaries(end);
+    var firstPart = calculateContinuous(start, startSurahBoundaries.lastAyahId);
+    //if the two surahs are beside each other : there is no between part
+    var inBetweenPart = startSurahBoundaries.firstAyahId - endSurahBoundaries.lastAyahId !== 1 ? calculateContinuous(endSurahBoundaries.lastAyahId, startSurahBoundaries.firstAyahId - 1) : 0;
+    var lastPart = calculateContinuous(endSurahBoundaries.firstAyahId, end);
+    var sum = firstPart + inBetweenPart + lastPart;
+    return sum;
+};
+//calculate <=1 thumun portions
 var ThumunPortionCalculator = function (start, end) {
     var realizedAyahs = [];
     var unrealizedAyahs = [];
@@ -138,5 +160,6 @@ var ThumunPortionCalculator = function (start, end) {
     var totalThumunLength = relizedLength + unrealizedAyahs.reduce(function (acc, ayahString) { return acc += ayahString.length; }, 0);
     return relizedLength / totalThumunLength;
 };
-var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah].verses[ayah - 1].text); };
-console.log('calculateContinuous(15, 50): ', calculateContinuous(15, 50));
+var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah - 1].verses[ayah - 1].text); };
+//console.log("calc", calculateUnContinuous(5797,5758))
+console.log("calc", calculateContinuous(5713, 5758));
