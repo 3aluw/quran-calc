@@ -87,7 +87,7 @@ function normalizeArabic(text) {
 }
 var locateAyahInHizbEighthList = function (ayahId) {
     var foundIndex = HizbEighthList.findIndex(function (HizbEighthaAyahId, index, array) {
-        return ayahId >= HizbEighthaAyahId && ayahId <= array[index + 1];
+        return ayahId >= HizbEighthaAyahId && ayahId < array[index + 1];
     });
     return foundIndex;
 };
@@ -98,6 +98,24 @@ var getThumunBoundaries = function (ayahId) {
     return { start: HizbEighthList[foundIndex], end: HizbEighthList[foundIndex + 1] - 1 }; // since the next in list is the start of teh following thumun
 };
 var calculateThumuns = function (start, end) {
+};
+var calculateContinuous = function (start, end) {
+    var startChunk = 0;
+    var endChunk = 0;
+    var thumunStartBoundaries = getThumunBoundaries(start);
+    var thumunEndBoundaries = getThumunBoundaries(end);
+    var startFullThumunIndex = locateAyahInHizbEighthList(start);
+    var endFullThumunIndex = locateAyahInHizbEighthList(end);
+    if (!HizbEighthList.includes(start)) {
+        startChunk = ThumunPortionCalculator(start, thumunStartBoundaries.end);
+        startFullThumunIndex++;
+    }
+    if (!HizbEighthList.includes(end)) {
+        endChunk = ThumunPortionCalculator(thumunEndBoundaries.start, end);
+    }
+    var targetedFullThumunsArray = HizbEighthList.slice(startFullThumunIndex, endFullThumunIndex);
+    var fullThumuns = targetedFullThumunsArray.length;
+    return fullThumuns + startChunk + endChunk;
 };
 var ThumunPortionCalculator = function (start, end) {
     var realizedAyahs = [];
@@ -118,7 +136,7 @@ var ThumunPortionCalculator = function (start, end) {
     }
     var relizedLength = realizedAyahs.reduce(function (acc, ayahString) { return acc += ayahString.length; }, 0);
     var totalThumunLength = relizedLength + unrealizedAyahs.reduce(function (acc, ayahString) { return acc += ayahString.length; }, 0);
-    console.log(relizedLength / totalThumunLength);
+    return relizedLength / totalThumunLength;
 };
 var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah].verses[ayah - 1].text); };
-ThumunPortionCalculator(1, 20);
+console.log('calculateContinuous(15, 50): ', calculateContinuous(15, 50));
