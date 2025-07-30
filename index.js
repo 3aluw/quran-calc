@@ -110,7 +110,6 @@ var calculateContinuous = function (start, end) {
     var startFullThumunIndex = locateAyahInHizbEighthList(start);
     var endFullThumunIndex = locateAyahInHizbEighthList(end);
     var isTheSameThumun = startFullThumunIndex === endFullThumunIndex;
-    console.log('startFullThumunIndex === endFullThumunIndex: ', startFullThumunIndex, endFullThumunIndex);
     if (!HizbEighthList.includes(start)) {
         startChunk = ThumunPortionCalculator(start, thumunStartBoundaries.end);
         startFullThumunIndex++;
@@ -140,10 +139,8 @@ var calculateUnContinuous = function (start, end) {
 var fullThumunsCalculator = function (startAyah, endAyah) {
     return HizbEighthList.reduce(function (count, levelStart, i) {
         var levelEnd = HizbEighthList[i + 1] - 1;
-        if (startAyah <= levelStart && endAyah >= levelEnd) {
-            console.log('startAyah <= levelStart ', startAyah, levelStart, endAyah, levelEnd);
+        if (startAyah <= levelStart && endAyah >= levelEnd)
             return count + 1;
-        }
         return count;
     }, 0);
 };
@@ -171,5 +168,5 @@ var ThumunPortionCalculator = function (start, end) {
 };
 var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah - 1].verses[ayah - 1].text); };
 //console.log("calc", calculateUnContinuous(5797,5758))
-console.log("calc", calculateContinuous(1, 20));
+console.log("calc", calculateContinuous(1, 25));
 //console.log("calc", fullThumunsCalculator(1, 20))
