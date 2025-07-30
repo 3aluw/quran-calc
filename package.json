@@ -20,15 +20,15 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
     "dist",
-    "package.json",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
+    "package.json"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --out-dir dist"
