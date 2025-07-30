@@ -2,7 +2,7 @@
   "name": "quran-calc",
   "version": "1.0.0",
   "type": "module",
-  "description": "calculates ranges in Quran (mainly thumuns)",
+  "description": "Calculate Quranic ranges in Thumuns (1/8 of Hizb)",
   "keywords": [
     "quran",
     "muuslim",
