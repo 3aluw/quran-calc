@@ -32,41 +32,41 @@ var HizbEighthList = [
     1535, 1547, 1557, 1567, 1578, 1593, 1606,
     1618, 1629, 1639, 1649, 1663, 1673, 1684,
     1697, 1706, 1712, 1723, 1726, 1737, 1742,
-    1751, 1760, 1769, 1769, 1789, 1803, 1828,
-    1851, 1882, 1902, 1916, 1931, 1939, 1936,
+    1751, 1760, 1769, 1778, 1789, 1803, 1828,
+    1851, 1882, 1902, 1916, 1931, 1939, 1952,
     1964, 1972, 1980, 1991, 1999, 2012, 2021,
     2030, 2040, 2052, 2060, 2079, 2090, 2099,
     2114, 2128, 2141, 2157, 2162, 2172, 2185,
     2194, 2204, 2212, 2223, 2239, 2251, 2272,
     2291, 2309, 2327, 2349, 2373, 2403, 2411, 2431,
     2443, 2459, 2476, 2484, 2499, 2513,
-    2525, 2531, 2557, 2570, 2612, 2596, 2598,
+    2525, 2531, 2557, 2570, 2584, 2596, 2606,
     2614, 2625, 2633, 2644, 2655, 2665, 2674,
     2694, 2709, 2730, 2748, 2770, 2788, 2802,
     2812, 2821, 2826, 2832, 2844, 2851, 2854,
-    2916, 2885, 2876, 2900, 2916, 2933, 2955,
+    2865, 2876, 2887, 2900, 2916, 2933, 2955,
     3003, 3010, 3043, 3078, 3113, 3140, 3165,
     3177, 3186, 3200, 3218, 3226, 3241, 3253,
     3264, 3272, 3281, 3290, 3303, 3313, 3328,
     3335, 3348, 3356, 3366, 3376, 3386, 3400,
     3407, 3431, 3440, 3450, 3457, 3481, 3491,
-    3501, 3514, 3526, 3539, 3546, 3553, 3542,
-    3568, 3571, 3584, 3588, 3593, 3605, 3609,
-    3621, 3630, 3634, 3652, 3675, 3663, 3691,
+    3501, 3514, 3526, 3539, 3546, 3553, 3561,
+    3568, 3573, 3584, 3588, 3593, 3605, 3613,
+    3621, 3630, 3640, 3652, 3665, 3675, 3691,
     3700, 3706, 3733, 3750, 3765, 3776, 3810,
     3839, 3871, 3902, 3933, 3971, 3991, 4000,
     4022, 4047, 4066, 4077, 4090, 4101, 4111,
-    4125, 4134, 4143, 4154, 4163, 4165, 4186,
-    4199, 4197, 4227, 4235, 4244, 4256, 4265,
-    4273, 4285, 4293, 4306, 4315, 4318, 4336,
+    4125, 4134, 4143, 4154, 4163, 4174, 4186,
+    4199, 4212, 4227, 4235, 4244, 4256, 4265,
+    4273, 4285, 4293, 4306, 4315, 4323, 4337,
     4349, 4368, 4388, 4409, 4439, 4465, 4484,
     4496, 4511, 4525, 4531, 4543, 4555, 4565,
     4578, 4591, 4601, 4610, 4613, 4621, 4626,
     4636, 4657, 4676, 4706, 4731, 4759, 4779,
     4810, 4840, 4864, 4887, 4902, 4934, 4961,
-    5006, 5054, 5082, 5091, 5097, 5105, 5118,
-    5111, 5127, 5137, 5144, 5157, 5164, 5178,
-    5197, 5177, 5206, 5197, 5223, 5229, 5213,
+    5006, 5054, 5082, 5091, 5097, 5105, 5112,
+    5118, 5127, 5137, 5144, 5157, 5164, 5178,
+    5186, 5197, 5206, 5213, 5223, 5229, 5237,
     5242, 5260, 5290, 5324, 5361, 5394, 5415,
     5434, 5448, 5465, 5495, 5526, 5552, 5592,
     5610, 5638, 5673, 5713, 5754, 5791, 5815,
@@ -100,26 +100,6 @@ var getThumunBoundaries = function (ayahId) {
     return { start: HizbEighthList[foundIndex], end: HizbEighthList[foundIndex + 1] - 1 }; // since the next in list is the start of teh following thumun
 };
 var calculateThumuns = function (start, end) {
-};
-//used in going down
-var calculateContinuous = function (start, end) {
-    var startChunk = 0;
-    var endChunk = 0;
-    var thumunStartBoundaries = getThumunBoundaries(start);
-    var thumunEndBoundaries = getThumunBoundaries(end);
-    var startFullThumunIndex = locateAyahInHizbEighthList(start);
-    var endFullThumunIndex = locateAyahInHizbEighthList(end);
-    var isTheSameThumun = startFullThumunIndex === endFullThumunIndex;
-    if (!HizbEighthList.includes(start)) {
-        startChunk = ThumunPortionCalculator(start, thumunStartBoundaries.end);
-        startFullThumunIndex++;
-    }
-    //if it is the same thumun: don't calculate again
-    if (!HizbEighthList.includes(end) && !isTheSameThumun) {
-        endChunk = ThumunPortionCalculator(thumunEndBoundaries.start, end);
-    }
-    var fullThumuns = fullThumunsCalculator(start, end);
-    return fullThumuns + startChunk + endChunk;
 };
 var getSurahBoundaries = function (ayahId) {
     var _a = (0, quran_meta_1.getSurahMeta)((0, quran_meta_1.findSurahByAyahId)(ayahId)), firstAyahId = _a.firstAyahId, lastAyahId = _a.lastAyahId;
@@ -166,7 +146,32 @@ var ThumunPortionCalculator = function (start, end) {
     var totalThumunLength = relizedLength + unrealizedAyahs.reduce(function (acc, ayahString) { return acc += ayahString.length; }, 0);
     return relizedLength / totalThumunLength;
 };
+//used in going down
+var calculateContinuous = function (start, end) {
+    var thumunStartBoundaries = getThumunBoundaries(start);
+    var thumunEndBoundaries = getThumunBoundaries(end);
+    var startFullThumunIndex = locateAyahInHizbEighthList(start);
+    var endFullThumunIndex = locateAyahInHizbEighthList(end);
+    var isTheSameThumun = startFullThumunIndex === endFullThumunIndex;
+    //if the start & end are from the same thumun then calculate the portion of the thumun
+    if (isTheSameThumun)
+        return ThumunPortionCalculator(start, end);
+    //if else calculate portion (start => end of thumun) & (start of thumun => end ) + full thumuns in between
+    var startChunk = 0;
+    var endChunk = 0;
+    if (!HizbEighthList.includes(start) && !isTheSameThumun) {
+        console.log('calculated start');
+        startChunk = ThumunPortionCalculator(start, thumunStartBoundaries.end);
+    }
+    if (!HizbEighthList.includes(end + 1) && !isTheSameThumun) {
+        console.log('calculated end');
+        endChunk = ThumunPortionCalculator(thumunEndBoundaries.start, end);
+    }
+    var fullThumuns = fullThumunsCalculator(start, end);
+    return fullThumuns + startChunk + endChunk;
+};
 var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah - 1].verses[ayah - 1].text); };
 //console.log("calc", calculateUnContinuous(5797,5758))
-console.log("calc", calculateContinuous(1, 25));
+console.log("calc", calculateContinuous(1, 6236));
 //console.log("calc", fullThumunsCalculator(1, 20))
+// 1 21 33
