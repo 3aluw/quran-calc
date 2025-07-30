@@ -4,7 +4,7 @@ var quran_meta_1 = require("quran-meta");
 var quran_1 = require("./quran");
 var HizbEighthList = [
     0, 1, 21, 33, 41, 51, 61, 67,
-    74, 21, 92, 99, 109, 113, 122,
+    74, 83, 92, 99, 109, 113, 122,
     131, 140, 149, 155, 165, 175, 184,
     192, 196, 204, 210, 220, 226, 235,
     240, 243, 250, 255, 260, 265, 270,
@@ -109,8 +109,8 @@ var calculateContinuous = function (start, end) {
     var thumunEndBoundaries = getThumunBoundaries(end);
     var startFullThumunIndex = locateAyahInHizbEighthList(start);
     var endFullThumunIndex = locateAyahInHizbEighthList(end);
-    console.log(thumunStartBoundaries, thumunEndBoundaries);
     var isTheSameThumun = startFullThumunIndex === endFullThumunIndex;
+    console.log('startFullThumunIndex === endFullThumunIndex: ', startFullThumunIndex, endFullThumunIndex);
     if (!HizbEighthList.includes(start)) {
         startChunk = ThumunPortionCalculator(start, thumunStartBoundaries.end);
         startFullThumunIndex++;
@@ -119,8 +119,7 @@ var calculateContinuous = function (start, end) {
     if (!HizbEighthList.includes(end) && !isTheSameThumun) {
         endChunk = ThumunPortionCalculator(thumunEndBoundaries.start, end);
     }
-    var targetedFullThumunsArray = HizbEighthList.slice(startFullThumunIndex, endFullThumunIndex);
-    var fullThumuns = targetedFullThumunsArray.length;
+    var fullThumuns = fullThumunsCalculator(start, end);
     return fullThumuns + startChunk + endChunk;
 };
 var getSurahBoundaries = function (ayahId) {
@@ -137,6 +136,16 @@ var calculateUnContinuous = function (start, end) {
     var lastPart = calculateContinuous(endSurahBoundaries.firstAyahId, end);
     var sum = firstPart + inBetweenPart + lastPart;
     return sum;
+};
+var fullThumunsCalculator = function (startAyah, endAyah) {
+    return HizbEighthList.reduce(function (count, levelStart, i) {
+        var levelEnd = HizbEighthList[i + 1] - 1;
+        if (startAyah <= levelStart && endAyah >= levelEnd) {
+            console.log('startAyah <= levelStart ', startAyah, levelStart, endAyah, levelEnd);
+            return count + 1;
+        }
+        return count;
+    }, 0);
 };
 //calculate <=1 thumun portions
 var ThumunPortionCalculator = function (start, end) {
@@ -162,4 +171,5 @@ var ThumunPortionCalculator = function (start, end) {
 };
 var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah - 1].verses[ayah - 1].text); };
 //console.log("calc", calculateUnContinuous(5797,5758))
-console.log("calc", calculateContinuous(5713, 5758));
+console.log("calc", calculateContinuous(1, 20));
+//console.log("calc", fullThumunsCalculator(1, 20))
