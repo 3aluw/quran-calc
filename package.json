@@ -1,6 +1,43 @@
 {
+  "name": "quran-calc",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "calculates ranges in Quran (mainly thumuns)",
+  "keywords": [
+    "quran",
+    "muuslim",
+    "hizb",
+    "juz"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/3aluw/thumun-calculato",
+  "author": "3aluw",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3aluw/thumun-calculator"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --out-dir dist"
+  },
   "dependencies": {
-    "quran-meta": "^5.0.3",
+    "quran-meta": "^5.0.3"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   }
 }

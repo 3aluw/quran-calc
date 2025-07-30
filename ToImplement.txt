@@ -1,0 +1,10 @@
+interface IAyahSurah  {
+ayah : AyahNo,
+surah : Surah
+}
+// computes thumuns by providing ayahSurah objects
+const computeThumuns = (start:IAyahSurah, end:IAyahSurah )=>{
+const startAyahId = findAyahIdBySurah(start.surah,start.ayah)
+const endAyahId = findAyahIdBySurah(end.surah,end.ayah)
+return computeThumunsByAyaId(startAyahId,endAyahId)
+}
