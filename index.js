@@ -172,6 +172,8 @@ var calculateContinuous = function (start, end) {
 };
 var getAyahText = function (ayah, surah) { return normalizeArabic(quran_1.quranJson[surah - 1].verses[ayah - 1].text); };
 //console.log("calc", calculateUnContinuous(5797,5758))
-console.log("calc", calculateContinuous(1, 6236));
+console.log("calc", calculateContinuous(20, 6236)); // 479
+console.log("calc", calculateContinuous(20, 20)); // 0.9
+console.log("calc", calculateContinuous(20, 35)); // 1.
 //console.log("calc", fullThumunsCalculator(1, 20))
 // 1 21 33
