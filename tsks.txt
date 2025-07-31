@@ -1,0 +1,6 @@
+1. add computeThumuns
+2. restructure by creating utils file for helper functions
+3. rename quranJson and use its package to use it
+4. add validity checking functions
+5. add tests
+6. add hizb / rub support 
