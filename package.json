@@ -37,6 +37,7 @@
     "quran-meta": "^5.0.3"
   },
   "devDependencies": {
+    "ts-node": "^10.9.2",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   }
